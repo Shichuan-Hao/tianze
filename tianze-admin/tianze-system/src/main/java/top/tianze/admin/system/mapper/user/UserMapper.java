@@ -16,6 +16,7 @@
 
 package top.tianze.admin.system.mapper.user;
 
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -23,6 +24,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import top.tianze.admin.common.base.mapper.DataPermissionMapper;
 import top.tianze.admin.system.model.entity.user.UserDO;
+import top.tianze.admin.system.model.entity.user.UserTenantIdentityDO;
 import top.tianze.admin.system.model.resp.user.UserDetailResp;
 import top.continew.starter.encrypt.field.annotation.FieldEncrypt;
 import top.continew.starter.extension.datapermission.annotation.DataPermission;
@@ -68,6 +70,16 @@ public interface UserMapper extends DataPermissionMapper<UserDO> {
     UserDO selectByUsername(@Param("username") String username);
 
     /**
+     * 跨租户按用户名查询身份（忽略租户行级过滤，仅用于登录租户解析）
+     *
+     * @param username 用户名
+     * @return 用户租户身份列表
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    @Select("SELECT id, username, tenant_id FROM sys_user WHERE username = #{username} AND deleted = 0")
+    List<UserTenantIdentityDO> selectTenantIdentitiesByUsername(@Param("username") String username);
+
+    /**
      * 根据手机号查询
      *
      * @param phone 手机号
@@ -77,6 +89,16 @@ public interface UserMapper extends DataPermissionMapper<UserDO> {
     UserDO selectByPhone(@FieldEncrypt @Param("phone") String phone);
 
     /**
+     * 跨租户按手机号查询身份（忽略租户行级过滤，仅用于登录租户解析）
+     *
+     * @param phone 手机号
+     * @return 用户租户身份列表
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    @Select("SELECT id, username, tenant_id FROM sys_user WHERE phone = #{phone} AND deleted = 0")
+    List<UserTenantIdentityDO> selectTenantIdentitiesByPhone(@FieldEncrypt @Param("phone") String phone);
+
+    /**
      * 根据邮箱查询
      *
      * @param email 邮箱
@@ -84,6 +106,16 @@ public interface UserMapper extends DataPermissionMapper<UserDO> {
      */
     @Select("SELECT * FROM sys_user WHERE email = #{email} AND deleted = 0")
     UserDO selectByEmail(@FieldEncrypt @Param("email") String email);
+
+    /**
+     * 跨租户按邮箱查询身份（忽略租户行级过滤，仅用于登录租户解析）
+     *
+     * @param email 邮箱
+     * @return 用户租户身份列表
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    @Select("SELECT id, username, tenant_id FROM sys_user WHERE email = #{email} AND deleted = 0")
+    List<UserTenantIdentityDO> selectTenantIdentitiesByEmail(@FieldEncrypt @Param("email") String email);
 
     /**
      * 根据 ID 查询昵称

@@ -17,7 +17,7 @@
               <span>{{ item.name }}</span>
               <span>{{ item.value }}</span>
             </div>
-            <a-progress color="#165dff" size="medium" :percent="item.value / totalValue" :show-text="false" />
+            <a-progress color="rgb(var(--primary-6))" size="medium" :percent="item.value / totalValue" :show-text="false" />
           </div>
         </div>
       </div>

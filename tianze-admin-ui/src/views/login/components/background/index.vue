@@ -1,9 +1,9 @@
 <template>
-  <div class="login-bg">
-    <div class="fly bg-fly-circle1"></div>
-    <div class="fly bg-fly-circle2"></div>
-    <div class="fly bg-fly-circle3"></div>
-    <div class="fly bg-fly-circle4"></div>
+  <div class="login-bg" aria-hidden="true">
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="glow glow-c"></div>
+    <div class="glow glow-d"></div>
   </div>
 </template>
 
@@ -11,69 +11,78 @@
 
 <style scoped lang="scss">
 .login-bg {
-  width: 100%;
-  height: 100%;
   position: fixed;
+  inset: 0;
   overflow: hidden;
   z-index: 1;
-}
-
-.fly {
   pointer-events: none;
-  position: fixed;
-  z-index: 9999;
-}
-.bg-fly-circle1 {
-  left: 40px;
-  top: 100px;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(to right, rgba(var(--primary-6), 0.07) 0%, rgba(var(--primary-6), 0.04) 100%);
-  animation: move 2.5s linear infinite;
+  background:
+    radial-gradient(ellipse 80% 60% at 12% 18%, rgba(31, 169, 122, 0.12), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 88% 78%, rgba(184, 140, 90, 0.1), transparent 50%),
+    linear-gradient(160deg, #f7faf8 0%, #f3f1eb 48%, #eef6f3 100%);
 }
 
-.bg-fly-circle2 {
-  left: 15%;
-  bottom: 5%;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: linear-gradient(to right, rgba(var(--primary-6), 0.08) 0%, rgba(var(--primary-6), 0.04) 100%);
-  animation: move 3s linear infinite;
+:global(body[arco-theme='dark']) .login-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 12% 18%, rgba(31, 169, 122, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 88% 78%, rgba(184, 140, 90, 0.08), transparent 50%),
+    linear-gradient(160deg, #141816 0%, #1a1c1b 48%, #151a18 100%);
 }
 
-.bg-fly-circle3 {
-  right: 12%;
-  top: 90px;
-  width: 145px;
-  height: 145px;
+.glow {
+  position: absolute;
   border-radius: 50%;
-  background: linear-gradient(to right, rgba(var(--primary-6), 0.1) 0%, rgba(var(--primary-6), 0.04) 100%);
-  animation: move 2.5s linear infinite;
+  filter: blur(2px);
+  animation: drift 8s ease-in-out infinite;
 }
 
-.bg-fly-circle4 {
-  right: 5%;
-  top: 60%;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: linear-gradient(to right, rgba(var(--primary-6), 0.02) 0%, rgba(var(--primary-6), 0.04) 100%);
-  animation: move 3.5s linear infinite;
+.glow-a {
+  left: 6%;
+  top: 18%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(11, 110, 110, 0.16) 0%, transparent 70%);
+  animation-duration: 9s;
 }
 
-@keyframes move {
-  0% {
-    transform: translateY(0px) scale(1);
+.glow-b {
+  left: 18%;
+  bottom: 8%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(201, 162, 39, 0.12) 0%, transparent 70%);
+  animation-duration: 11s;
+  animation-delay: -2s;
+}
+
+.glow-c {
+  right: 10%;
+  top: 12%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(31, 169, 122, 0.14) 0%, transparent 70%);
+  animation-duration: 10s;
+  animation-delay: -4s;
+}
+
+.glow-d {
+  right: 4%;
+  bottom: 16%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(184, 140, 90, 0.1) 0%, transparent 70%);
+  animation-duration: 12s;
+  animation-delay: -1s;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   50% {
-    transform: translateY(25px) scale(1.1);
-  }
-
-  100% {
-    transform: translateY(0px) scale(1);
+    transform: translate3d(0, 18px, 0) scale(1.06);
   }
 }
 </style>

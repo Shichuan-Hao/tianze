@@ -27,7 +27,7 @@ import * as Regexp from '@/utils/regexp'
 defineOptions({ name: 'Avatar' })
 
 const props = withDefaults(defineProps<Props>(), {
-  color: '#168CFF',
+  color: '#0B6E6E',
   size: 20,
   alt: 'avatar',
   trigger: false,
@@ -61,21 +61,24 @@ const avatarName = computed(() => {
 })
 
 const colors = [
-  '#168CFF',
-  '#7BC616',
+  '#0B6E6E',
+  '#1FA97A',
   '#14C9C9',
-  '#FF7D00',
-  '#FFC72E',
+  '#C9A227',
+  '#2BB889',
 ]
 const avatarColor = computed(() => {
-  const hash = (s) => {
-    let hash = 0
-    for (let i = 0; i < s.length; i++) {
-      hash = (hash << 5) - hash + s.charCodeAt(i)
-    }
-    return Math.abs(hash)
+  if (props.color && props.color !== '#0B6E6E') {
+    return props.color
   }
-  return colors[hash(props.name || props.text) % (colors.length)]
+  const hash = (s: string) => {
+    let value = 0
+    for (let i = 0; i < s.length; i++) {
+      value = (value << 5) - value + s.charCodeAt(i)
+    }
+    return Math.abs(value)
+  }
+  return colors[hash(props.name || props.text || '') % colors.length]
 })
 </script>
 

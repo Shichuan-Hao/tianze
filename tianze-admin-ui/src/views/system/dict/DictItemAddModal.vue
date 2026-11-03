@@ -16,7 +16,7 @@
           placeholder="请选择颜色"
           allow-clear
         >
-          <a-option value="primary"><a-tag color="arcoblue">主要（极致蓝）</a-tag></a-option>
+          <a-option value="primary"><a-tag color="arcoblue">主要（品牌色）</a-tag></a-option>
           <a-option value="success"><a-tag color="green">成功（仙野绿）</a-tag></a-option>
           <a-option value="warning"><a-tag color="orangered">警告（活力橙）</a-tag></a-option>
           <a-option value="error"><a-tag color="red">错误（浪漫红）</a-tag></a-option>

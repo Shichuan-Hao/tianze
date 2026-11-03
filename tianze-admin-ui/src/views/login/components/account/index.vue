@@ -8,9 +8,6 @@
     size="large"
     @submit="handleLogin"
   >
-    <a-form-item v-if="tenantStore.needInputTenantCode" field="tenantCode" hide-label>
-      <a-input v-model="tenantCode" placeholder="请输入租户编码（不输入时为默认租户）" allow-clear />
-    </a-form-item>
     <a-form-item field="username" hide-label>
       <a-input v-model="form.username" placeholder="请输入用户名" allow-clear />
     </a-form-item>
@@ -44,7 +41,7 @@
 import { type FormInstance, Message } from '@arco-design/web-vue'
 import { useStorage } from '@vueuse/core'
 import { getImageCaptcha } from '@/apis/common'
-import { useTabsStore, useTenantStore, useUserStore } from '@/stores'
+import { useTabsStore, useUserStore } from '@/stores'
 import { encryptByRsa } from '@/utils/encrypt'
 
 const loginConfig = useStorage('login-config', {
@@ -58,7 +55,6 @@ const loginConfig = useStorage('login-config', {
 const isCaptchaEnabled = ref(true)
 // 验证码图片
 const captchaImgBase64 = ref()
-const tenantCode = ref()
 const formRef = ref<FormInstance>()
 const form = reactive({
   username: loginConfig.value.username,
@@ -108,7 +104,6 @@ const getCaptcha = () => {
   })
 }
 
-const tenantStore = useTenantStore()
 const userStore = useUserStore()
 const tabsStore = useTabsStore()
 const router = useRouter()
@@ -125,7 +120,7 @@ const handleLogin = async () => {
       password: encryptByRsa(form.password) || '',
       captcha: form.captcha,
       uuid: form.uuid,
-    }, tenantCode.value)
+    })
     tabsStore.reset()
     const { redirect, ...othersQuery } = router.currentRoute.value.query
     const { rememberMe } = loginConfig.value
@@ -161,8 +156,8 @@ onMounted(() => {
 <style scoped lang="scss">
 .arco-input-wrapper,
 :deep(.arco-select-view-single) {
-  height: 40px;
-  border-radius: 4px;
+  height: 42px;
+  border-radius: 10px;
   font-size: 13px;
 }
 
@@ -182,38 +177,48 @@ onMounted(() => {
 }
 
 .arco-input-wrapper:hover {
-  border-color: rgb(var(--arcoblue-6));
+  border-color: #1fa97a;
 }
 
 .captcha {
-  width: 111px;
-  height: 36px;
-  margin: 0 0 0 5px;
+  width: 108px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .btn {
-  height: 40px;
+  height: 42px;
+  border-radius: 10px;
 }
 
 .captcha-container {
   position: relative;
   display: flex;
+  margin-left: 10px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(11, 110, 110, 0.12);
   cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.captcha-container:hover {
+  border-color: rgba(31, 169, 122, 0.45);
+  box-shadow: 0 0 0 3px rgba(31, 169, 122, 0.1);
 }
 
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(51, 51, 51, 0.8);
+  inset: 0;
+  background-color: rgba(18, 58, 56, 0.72);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .overlay p {
+  margin: 0;
   font-size: 12px;
   color: white;
 }

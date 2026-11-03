@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, reactive, toRefs } from 'vue'
 import { generate, getRgbStr } from '@arco-design/color'
 import { type BasicConfig, listSiteOptionDict } from '@/apis/system'
-import { getSettings } from '@/config/setting'
+import { BRAND_THEME_COLOR, getSettings, LEGACY_THEME_COLOR } from '@/config/setting'
 
 const storeSetup = () => {
   // App配置
@@ -24,10 +24,13 @@ const storeSetup = () => {
   const setThemeColor = (color: string) => {
     if (!color) return
     settingConfig.themeColor = color
+    // gi-demo 主题里 @primary-* 映射到 --arcoblue-*，两边都要写，否则链接/图标仍是蓝
     const list = generate(settingConfig.themeColor, { list: true, dark: settingConfig.theme === 'dark' }) as string[]
-    list.forEach((color, index) => {
-      const rgbStr = getRgbStr(color)
-      document.body.style.setProperty(`--primary-${index + 1}`, rgbStr)
+    list.forEach((item, index) => {
+      const rgbStr = getRgbStr(item)
+      const n = index + 1
+      document.body.style.setProperty(`--primary-${n}`, rgbStr)
+      document.body.style.setProperty(`--arcoblue-${n}`, rgbStr)
     })
   }
 
@@ -45,7 +48,10 @@ const storeSetup = () => {
 
   // 初始化主题
   const initTheme = () => {
-    if (!settingConfig.themeColor) return
+    // 本地仍是旧默认蓝时，迁移为天泽品牌色（用户自定义色不受影响）
+    if (!settingConfig.themeColor || settingConfig.themeColor.toUpperCase() === LEGACY_THEME_COLOR) {
+      settingConfig.themeColor = BRAND_THEME_COLOR
+    }
     setThemeColor(settingConfig.themeColor)
   }
 
@@ -68,18 +74,22 @@ const storeSetup = () => {
       siteConfig.SITE_TITLE = resMap.get('SITE_TITLE')
       siteConfig.SITE_COPYRIGHT = resMap.get('SITE_COPYRIGHT')
       siteConfig.SITE_BEIAN = resMap.get('SITE_BEIAN')
-      document.title = resMap.get('SITE_TITLE')
-      document
-        .querySelector('link[rel="shortcut icon"]')
-        ?.setAttribute('href', resMap.get('SITE_FAVICON') || '/favicon.ico')
+      document.title = resMap.get('SITE_TITLE') || '天泽'
+      const favicon = resMap.get('SITE_FAVICON') || '/favicon.ico?v=deer6'
+      document.querySelectorAll('link[rel="shortcut icon"], link[rel="icon"]').forEach((el) => {
+        el.setAttribute('href', favicon)
+      })
     })
   }
 
   // 设置系统配置
   const setSiteConfig = (config: BasicConfig) => {
     Object.assign(siteConfig, config)
-    document.title = config.SITE_TITLE || ''
-    document.querySelector('link[rel="shortcut icon"]')?.setAttribute('href', config.SITE_FAVICON || '/favicon.ico')
+    document.title = config.SITE_TITLE || '天泽'
+    const favicon = config.SITE_FAVICON || '/favicon.ico?v=deer6'
+    document.querySelectorAll('link[rel="shortcut icon"], link[rel="icon"]').forEach((el) => {
+      el.setAttribute('href', favicon)
+    })
   }
   // 监听 色弱模式 和 哀悼模式
   watch([

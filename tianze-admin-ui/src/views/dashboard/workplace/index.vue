@@ -5,14 +5,7 @@
         <Welcome />
       </div>
       <div style="margin-top: 14px">
-        <a-grid :cols="24" :col-gap="14" :row-gap="14">
-          <a-grid-item :span="24">
-            <Project />
-          </a-grid-item>
-          <a-grid-item :span="24">
-            <LatestActivity />
-          </a-grid-item>
-        </a-grid>
+        <LatestActivity />
       </div>
     </div>
     <div class="right-side">
@@ -38,7 +31,6 @@
 
 <script setup lang="ts">
 import Welcome from './components/Welcome.vue'
-import Project from './components/Project.vue'
 import LatestActivity from './components/LatestActivity.vue'
 import QuickOperation from './components/QuickOperation.vue'
 import Carousel from './components/Carousel.vue'
@@ -92,11 +84,11 @@ defineOptions({ name: 'Workplace' })
     }
     &:hover {
       .icon {
-        color: rgb(var(--arcoblue-6));
-        background-color: #e8f3ff;
+        color: rgb(var(--primary-6));
+        background-color: rgba(var(--primary-6), 0.1);
       }
       .text {
-        color: rgb(var(--arcoblue-6));
+        color: rgb(var(--primary-6));
       }
     }
   }

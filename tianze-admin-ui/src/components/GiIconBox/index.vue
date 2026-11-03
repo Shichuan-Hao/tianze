@@ -12,7 +12,7 @@
 import { type CSSProperties, computed } from 'vue'
 
 const props = withDefaults(defineProps<Props>(), {
-  color: '#165DFF',
+  color: '#0B6E6E',
   size: 20,
   shape: 'square',
 })
@@ -31,7 +31,7 @@ interface Props {
   /**
    * 背景颜色
    * @description 支持预设状态颜色或自定义颜色值
-   * @default '#165DFF'
+   * @default '#0B6E6E'
    */
   color?: ColorType
   /**

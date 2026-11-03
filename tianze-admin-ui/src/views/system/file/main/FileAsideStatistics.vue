@@ -53,7 +53,7 @@ const totalData = ref<FileStatisticsResp>({
 const chartData = ref<Array<{ key: string, name: string, value: number, size: string }>>([])
 const statisticValueStyle = { 'color': '#5856D6', 'font-size': '18px' }
 const chartHeight = 135
-const chartColors = ['#165DFF', '#36CFC9', '#F7BA1E', '#722ED1', '#00B42A', '#F53F3F', '#86909C', '#FF7D00']
+const chartColors = ['#0B6E6E', '#36CFC9', '#F7BA1E', '#722ED1', '#00B42A', '#F53F3F', '#86909C', '#FF7D00']
 const hiddenLegendMap = ref<Record<string, boolean>>({})
 const legendItems = computed(() => {
   return chartData.value.map((item, index) => ({

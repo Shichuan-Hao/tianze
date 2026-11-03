@@ -1,7 +1,6 @@
 <template>
   <section class="system-logo" :class="{ collapsed: props.collapsed }" @click="toHome">
-    <img v-if="logo" class="logo" :src="logo" alt="logo" />
-    <img v-else class="logo" src="/logo.png" alt="logo" />
+    <img class="logo" :src="logo" alt="logo" />
     <span v-if="!props.hideName" class="system-name gi_line_1">{{ title }}</span>
   </section>
 </template>
@@ -16,7 +15,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const appStore = useAppStore()
 const title = computed(() => appStore.getTitle())
-const logo = computed(() => appStore.getLogo())
+const logo = computed(() => {
+  const value = appStore.getLogo()?.trim()
+  if (!value || value === '/logo.svg') {
+    return '/logo.png'
+  }
+  return value
+})
 
 /** Props 类型定义 */
 interface Props {

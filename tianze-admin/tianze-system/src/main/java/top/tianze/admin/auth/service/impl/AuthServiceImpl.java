@@ -30,6 +30,7 @@ import top.tianze.admin.auth.model.req.LoginReq;
 import top.tianze.admin.auth.model.resp.LoginResp;
 import top.tianze.admin.auth.model.resp.RouteResp;
 import top.tianze.admin.auth.service.AuthService;
+import top.tianze.admin.auth.tenant.LoginTenantResolver;
 import top.tianze.admin.common.context.RoleContext;
 import top.tianze.admin.common.enums.DisEnableStatusEnum;
 import top.tianze.admin.system.constant.SystemConstants;
@@ -43,13 +44,16 @@ import top.continew.starter.core.exception.BadRequestException;
 import top.continew.starter.core.util.validation.ValidationUtils;
 import top.continew.starter.extension.crud.annotation.TreeField;
 import top.continew.starter.extension.crud.autoconfigure.CrudProperties;
+import top.continew.starter.extension.tenant.util.TenantUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 认证业务实现
@@ -66,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleService roleService;
     private final MenuService menuService;
     private final CrudProperties crudProperties;
+    private final List<LoginTenantResolver> loginTenantResolvers;
 
     @Override
     public LoginResp login(LoginReq req, HttpServletRequest request, HttpServletResponse response) {
@@ -84,13 +89,34 @@ public class AuthServiceImpl implements AuthService {
         if (loginHandler == null) {
             throw new BadRequestException("不支持的认证类型 [" + authType.getDescription() + "]");
         }
-        // 登录前置处理
+        // 登录前置处理（验证码等与租户无关）
         loginHandler.preLogin(req, client, request);
-        // 登录
+        // 未显式指定租户时，通过扩展点解析目标租户后再执行登录
+        Long resolvedTenantId = resolveLoginTenantId(req, request);
+        if (resolvedTenantId != null) {
+            AtomicReference<LoginResp> loginRespRef = new AtomicReference<>();
+            TenantUtils.execute(resolvedTenantId, () -> {
+                LoginResp loginResp = loginHandler.login(req, client, request, response);
+                loginHandler.postLogin(req, client, request);
+                loginRespRef.set(loginResp);
+            });
+            return loginRespRef.get();
+        }
         LoginResp loginResp = loginHandler.login(req, client, request, response);
-        // 登录后置处理
         loginHandler.postLogin(req, client, request);
         return loginResp;
+    }
+
+    private Long resolveLoginTenantId(LoginReq req, HttpServletRequest request) {
+        if (CollUtil.isEmpty(loginTenantResolvers)) {
+            return null;
+        }
+        return loginTenantResolvers.stream()
+            .filter(resolver -> resolver.supports(req, request))
+            .map(resolver -> resolver.resolve(req, request))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 
     @Override

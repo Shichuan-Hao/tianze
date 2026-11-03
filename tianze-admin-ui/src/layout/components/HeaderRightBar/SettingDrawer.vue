@@ -121,6 +121,8 @@ const open = () => {
 
 // 默认显示的主题色列表
 const defaultColorList = [
+  '#0B6E6E',
+  '#1FA97A',
   '#165DFF',
   '#409EFF',
   '#18A058',

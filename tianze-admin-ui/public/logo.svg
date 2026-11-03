@@ -1,28 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="天泽白鹤">
-  <defs>
-    <linearGradient id="wing" x1="54" y1="48" x2="92" y2="92" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#F7FBFB"/>
-      <stop offset="100%" stop-color="#D7EEE8"/>
-    </linearGradient>
-  </defs>
-  <!-- body -->
-  <ellipse cx="62" cy="72" rx="18" ry="24" fill="#FFFFFF" stroke="#E6F2EF" stroke-width="1"/>
-  <!-- wing layers -->
-  <path fill="url(#wing)" d="M52 62c10 2 24 4 34-2 2 10-4 22-16 30-12-4-20-14-18-28z"/>
-  <path fill="#BFE8DE" d="M78 78c6 4 10 10 10 16-8-2-14-8-16-14 2-1 4-2 6-2z" opacity=".9"/>
-  <!-- neck -->
-  <path fill="#FFFFFF" stroke="#E6F2EF" stroke-width="1" d="M70 54c10-12 12-22 8-30-2 8-8 16-16 22z"/>
-  <!-- head -->
-  <circle cx="78" cy="26" r="8" fill="#FFFFFF" stroke="#E6F2EF" stroke-width="1"/>
-  <!-- crest -->
-  <path fill="#7BC4B4" d="M74 20c1-7 4-10 7-10 .5 3 .2 7-1.5 10-1.8-.4-3.8-.4-5.5 0z"/>
-  <path fill="#9ED4C8" d="M78 18c2-6 5-8 7-7 0 3-.5 6-2 9-1.8-1-3.5-1.5-5-2z"/>
-  <!-- beak & eye -->
-  <path fill="#E8B84A" d="M85 26l16 2.2-16 2.4z"/>
-  <circle cx="80" cy="25" r="1.4" fill="#2A3A3A"/>
-  <!-- legs -->
-  <path stroke="#E8B84A" stroke-width="3" stroke-linecap="round" d="M58 94v18"/>
-  <path stroke="#E8B84A" stroke-width="3" stroke-linecap="round" d="M66 92v16"/>
-  <path stroke="#E8B84A" stroke-width="3" stroke-linecap="round" d="M58 112h10"/>
-  <path stroke="#E8B84A" stroke-width="3" stroke-linecap="round" d="M66 108h8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="天泽小鹿">
+  <image href="/logo.png" width="128" height="128" preserveAspectRatio="xMidYMid meet" />
 </svg>

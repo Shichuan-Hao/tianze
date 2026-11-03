@@ -1,6 +1,11 @@
+/** 天泽品牌主色（与登录页青绿一致） */
+export const BRAND_THEME_COLOR = '#0B6E6E'
+/** 历史默认蓝，仅用于本地持久化迁移 */
+export const LEGACY_THEME_COLOR = '#165DFF'
+
 export const defaultSettings: App.AppSettings = {
   theme: 'light',
-  themeColor: '#165DFF',
+  themeColor: BRAND_THEME_COLOR,
   tab: true,
   tabMode: 'card-gutter',
   animate: false,

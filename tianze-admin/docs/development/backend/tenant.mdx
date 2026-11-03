@@ -11,6 +11,8 @@ description: 新业务表如何加 tenant_id 字段并继承 TenantBaseDO 纳入
 
 两个例外。`/auth/refresh` 与 `/auth/logout` 会忽略前端残留的租户头，统一按 Refresh Session 里记录的租户执行（`DefaultTenantProvider.isTenantIndependentAuthRequest`）；异步任务没有请求上下文，用 `TenantUtils.execute(tenantId, () -> ...)` 显式进入租户上下文。
 
+登录页已不再收集租户编码：无显式租户头时，由 `LoginTenantResolver` / `IdentityLoginTenantResolver` 按用户名（或手机号、邮箱）跨租户定位所属租户后再验密。完整时序与开闭原则说明见 [登录页品牌化与免租户编码登录](/docs/admin/development/login-ux-and-tenant)。
+
 ## 新业务表接入
 
 <Steps>

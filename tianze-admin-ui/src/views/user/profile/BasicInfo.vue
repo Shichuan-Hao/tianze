@@ -191,10 +191,10 @@ const onUpdate = async () => {
   width: 32px;
   height: 32px;
   line-height: 32px;
-  background-color: #e8f3ff;
+  background-color: rgba(var(--primary-6), 0.1);
   .arco-icon-camera {
     margin-top: 8px;
-    color: rgb(var(--arcoblue-6));
+    color: rgb(var(--primary-6));
     font-size: 14px;
   }
 }
